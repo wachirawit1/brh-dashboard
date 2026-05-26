@@ -111,17 +111,15 @@
     </style>
 </head>
 
-<body class="flex min-h-screen">
+<body class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col shadow-sm">
-        <a href="{{ route('dashboard') }}" class="p-6 flex items-center gap-3 hover:opacity-80 transition group">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-9 w-auto object-contain shrink-0">
+    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col shadow-sm shrink-0">
+        <a href="{{ route('dashboard') }}" class="p-6 flex items-center gap-3 hover:opacity-80 transition group border-b border-gray-50">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 w-auto object-contain shrink-0">
             <div class="sidebar-text">
-                <h1 class="text-sm font-bold text-blue-600 tracking-tight leading-none group-hover:text-blue-700">
-                    ภาวะสุขภาพประจำปี</h1>
-                <p
-                    class="text-[9px] text-gray-400 mt-1 uppercase tracking-wider font-semibold group-hover:text-gray-500">
-                    รายงานสรุปรายหน่วยงาน</p>
+                <h1 class="text-xs font-black text-blue-600 tracking-tight leading-tight group-hover:text-blue-700">
+                    รายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน
+                </h1>
             </div>
         </a>
 

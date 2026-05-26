@@ -1,58 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ระบบแดชบอร์ดผลตรวจสุขภาพ BRH (BRH Health Drive)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ระบบเว็บบอร์ดจัดเก็บ ค้นหา แสดงผลตัวอย่าง (Preview) และดาวน์โหลดข้อมูลผลตรวจสุขภาพของบุคลากรโรงพยาบาลกรุงเทพ ระยอง (BRH) อย่างปลอดภัย มีประสิทธิภาพ และสอดคล้องตามมาตรฐานการคุ้มครองข้อมูลส่วนบุคคล (PDPA)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🌟 ฟีเจอร์หลักของระบบ (Features)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **ระบบคัดกรองความปลอดภัยข้อมูลส่วนบุคคล (PDPA Sanitization)**
+   * ผู้ใช้ทั่วไปจะถูกปิดบังประวัติสุขภาพที่เป็นความลับ โดยคอลัมน์ HN (โรงพยาบาล) จะถูกตัดออกจากการพรีวิวและดาวน์โหลดโดยอัตโนมัติ
+   * มีการกรองค้นหาคำสำคัญทางการแพทย์ที่เป็นความลับสูง เช่น คำย่อรหัสโรค `B24` ในคอลัมน์โรคประจำตัว และแปลงค่าเป็นคำว่า `"ไม่ระบุ ;"` อัตโนมัติเพื่อปกป้องข้อมูลพนักงาน
+2. **ระบบการพรีวิวออนไลน์ (Online Spreadsheet Preview)**
+   * สามารถเปิดแสดงตาราง Excel บนเบราว์เซอร์ได้ทันทีโดยไม่ต้องโหลดไฟล์ลงเครื่อง พร้อมแยกการแสดงผลตามแผ่นชีท (Tab Sheets) อย่างสวยงาม
+3. **แดชบอร์ดอัจฉริยะแยกสิทธิ์การเข้าถึง (Role-Based Dashboard)**
+   * **สิทธิ์ผู้ดูแลระบบ (Admin)**: สามารถนำเข้าไฟล์ Excel สุขภาพ, จัดการเผยแพร่/ยกเลิกการเผยแพร่ไฟล์ (Publish/Draft) และเข้าถึงระบบจัดการรายชื่อบุคลากร (ค้นหา ลบ แก้ไขบทบาทพนักงาน) พร้อมระบบแบ่งหน้า (Pagination 10 รายการต่อหน้า)
+   * **สิทธิ์ผู้ใช้ทั่วไป (User)**: แสดงผลเฉพาะแผนกของตนเอง และเข้าถึงเฉพาะไฟล์ที่แอดมินกดเผยแพร่ (Publish) แล้วเท่านั้น
+4. **ระบบพรีเมียมพอร์ทัล (Premium Interface & Modern UI/UX)**
+   * หน้าเข้าสู่ระบบ (Login) และอินเตอร์เฟสแดชบอร์ด ได้รับการออกแบบให้มีความพรีเมียม สวยงาม รองรับการแสดงผลทุกหน้าจอ (Responsive Design)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 💻 คู่มือขั้นตอนการทำงานและอัปเดตระบบขึ้นเซิร์ฟเวอร์จริง (IIS Deployment Guide)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+ระบบนี้ใช้มาตรฐาน **GitHub + PowerShell Remoting (WinRM)** ในการอัปเดตระบบ เพื่อความรวดเร็ว ปลอดภัยสูงสุด และตัดปัญหาเรื่องสิทธิ์การเขียนไฟล์ขัดแย้งกันอย่างเด็ดขาด
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+ [เครื่อง Desktop ทำงานของคุณ]                          [เครื่องเซิร์ฟเวอร์จริง (IIS)]
+           |                                                      |
+           |-- 1. แก้ไขงานเสร็จ สั่ง: git push origin main -------->| (เก็บโค้ดบน GitHub)
+           |                                                      |
+           |-- 2. สั่งรีโมทระยะไกล (WinRM): Enter-PSSession ------->| (เข้าสู่ระบบเซิร์ฟเวอร์)
+           |                                                      |
+           |-- 3. สั่งดึงโค้ดอัปเดตงานบนเซิร์ฟเวอร์: git pull ------->| (อัปเดตไฟล์ใน wwwroot ทันที)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 1. วิธีปฏิบัติงานวันปกติในการอัปเดตหน้าเว็บจริง (Daily Update Workflow)
 
-## Contributing
+เมื่อคุณแก้ไขงานหรือเพิ่มฟังก์ชันใดๆ บนโฟลเดอร์โปรเจกต์เครื่อง Desktop ของคุณเสร็จเรียบร้อยแล้ว ให้ทำตามขั้นตอน 3 ขั้นง่ายๆ นี้เพื่อส่งงานขึ้นระบบจริงในพริบตา:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### **ขั้นที่ 1: บันทึกและส่งโค้ดขึ้นคลังกลาง GitHub**
+เปิด Terminal ในโฟลเดอร์งานบน Desktop ของคุณ แล้วพิมพ์คำสั่ง:
+```powershell
+git add .
+git commit -m "ระบุข้อความอธิบายการอัปเดตงาน"
+git push origin main
+```
 
-## Code of Conduct
+#### **ขั้นที่ 2: สั่งเปิดสัญญาณรีโมทเข้าสู่เครื่องเซิร์ฟเวอร์จากเครื่องของคุณ**
+พิมพ์คำสั่งเชื่อมต่อรีโมทข้ามเครื่องใน PowerShell ของคุณ:
+```powershell
+Enter-PSSession -ComputerName 192.168.95.80 -Credential gituser
+```
+*(ระบบจะให้ป้อนรหัสผ่านของบัญชี `gituser` เมื่อใส่ถูกต้อง หน้าจอจะเปลี่ยนสถานะเป็นสิทธิ์ของเซิร์ฟเวอร์ทันที)*
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### **ขั้นที่ 3: สั่งให้เซิร์ฟเวอร์ดึงโค้ดเวอร์ชันล่าสุดมาใช้งาน**
+เมื่อรีโมทเข้ามาสำเร็จแล้ว ให้พิมพ์สั่งคำสั่ง 2 บรรทัดนี้เพื่ออัปเดตระบบหน้าเว็บจริงทันที:
+```powershell
+cd C:\inetpub\wwwroot\brh-health-drive
+git pull origin main
+```
+*(เมื่อดึงไฟล์เสร็จเรียบร้อย ให้พิมพ์คำสั่ง **`exit`** เพื่อออกจากเซิร์ฟเวอร์กลับสู่เครื่องปกติของคุณอย่างปลอดภัย)*
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. ข้อมูลการตั้งค่าระบบความปลอดภัยทางเทคนิค (IT Configurations)
 
-## License
+สำหรับฝ่ายไอทีหรือการสืบค้นเพื่อตั้งค่าความปลอดภัยบนเครื่องเซิร์ฟเวอร์จริง IIS:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### **พิกัดที่ตั้งหน้าเว็บจริงของ IIS (Physical Path)**
+* ชี้เป้าหมายไปที่โฟลเดอร์ย่อย `public` ของระบบเท่านั้น เพื่อความปลอดภัยสูงสุด:
+  `C:\inetpub\wwwroot\brh-health-drive\public`
+
+#### **ข้อยกเว้นสิทธิ์เขียนโฟลเดอร์ชั่วคราว (PHP upload_tmp_dir)**
+* เพื่อแก้ปัญหาอัปโหลดไฟล์ Excel แล้วเกิดข้อผิดพลาด `Path cannot be empty` ตัวแปรใน **`php.ini`** ต้องชี้ไปโฟลเดอร์พิเศษที่จำกัดสิทธิ์เขียนสำหรับกลุ่มเว็บดังนี้:
+  ```ini
+  upload_tmp_dir = "C:\php_temp"
+  sys_temp_dir = "C:\php_temp"
+  ```
+* โดยที่โฟลเดอร์ `C:\php_temp` บนเซิร์ฟเวอร์ ต้องคลิกขวา Properties -> Security -> Add กลุ่ม **`IIS_IUSRS`** หรือบัญชีผู้ใช้ระบบอื่นให้ได้รับสิทธิ์ **Modify** และ **Write** เสมอ
+
+#### **ข้อยกเว้นความปลอดภัยของโฟลเดอร์ Git บนเซิร์ฟเวอร์**
+* บัญชี `gituser` บนเซิร์ฟเวอร์จะต้องยอมรับสิทธิ์ในการอ่านคลังระบบ โดยการสั่งรันครั้งแรกครั้งเดียวใน PowerShell เซิร์ฟเวอร์:
+  ```powershell
+  git config --global --add safe.directory C:/inetpub/wwwroot/brh-health-drive
+  ```
+
+#### **การตั้งสิทธิ์รีโมทข้ามเครื่องระดับ Workgroup (WinRM Setup)**
+* บัญชีผู้ใช้งานเฉพาะกิจบนเซิร์ฟเวอร์ (เช่น `gituser`) ต้องได้รับการเพิ่มเข้าไปในกลุ่มระบบที่ชื่อว่า **`Remote Management Users`** บนเซิร์ฟเวอร์ เพื่อเปิดสิทธิ์การรีโมท
+* เครื่องคอมพิวเตอร์ Desktop ของคุณ ต้องระบุให้ไว้ใจเครื่องเซิร์ฟเวอร์ปลายทางด้วยการเปิดรัน PowerShell (Administrator) บนเครื่องตนเอง:
+  ```powershell
+  Start-Service WinRM
+  Set-Item WSMan:\localhost\Client\TrustedHosts -Value "192.168.95.80" -Force
+  ```

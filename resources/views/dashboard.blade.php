@@ -99,38 +99,148 @@
             </div>
 
             @if (Auth::user()->role === 'admin')
-                <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                    <select name="department"
-                        class="text-sm border-gray-200 rounded-full px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                        onchange="this.form.submit()">
-                        <option value="">ทุกแผนก</option>
-                        @foreach ($departments as $dept)
-                            <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>
-                                {{ $dept }}</option>
-                        @endforeach
-                    </select>
+                <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto items-center">
+                    <!-- Custom Searchable Dropdown for Departments -->
+                    <div class="relative inline-block text-left w-full sm:w-64" id="searchable-dept-container">
+                        <!-- Hidden select to keep backend form submit fully working -->
+                        <select name="department" id="real-dept-select" class="hidden">
+                            <option value="">ทุกแผนก</option>
+                            @foreach ($departments as $dept)
+                                <option value="{{ $dept }}" {{ request('department') == $dept ? 'selected' : '' }}>
+                                    {{ $dept }}</option>
+                            @endforeach
+                        </select>
 
-                    <select name="year"
-                        class="text-sm border-gray-200 rounded-full px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                        onchange="this.form.submit()">
-                        <option value="">ทุกปีการตรวจ</option>
-                        @foreach ($years as $yr)
-                            <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
-                                {{ $yr }}</option>
-                        @endforeach
-                    </select>
+                        <!-- Trigger Button -->
+                        <button type="button" id="dept-dropdown-btn"
+                            class="flex items-center justify-between w-full text-left text-sm border border-gray-200 rounded-full px-5 py-2 bg-white text-gray-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200">
+                            <span id="selected-dept-label" class="truncate">
+                                {{ request('department') ?: 'ทุกแผนก' }}
+                            </span>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="dept-dropdown-menu"
+                            class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
+                            <!-- Search Input -->
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </span>
+                                <input type="text" id="dept-search-input" placeholder="พิมพ์ค้นหาแผนกด่วน..."
+                                    class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-semibold">
+                            </div>
+
+                            <!-- List of options -->
+                            <div id="dept-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                                <button type="button" onclick="selectDepartment('')"
+                                    class="dept-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('department') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    data-value="">
+                                    ทุกแผนก
+                                </button>
+                                @foreach ($departments as $dept)
+                                    <button type="button" onclick="selectDepartment('{{ $dept }}')"
+                                        class="dept-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('department') == $dept ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        data-value="{{ $dept }}">
+                                        {{ $dept }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Year Dropdown for Admin -->
+                    <div class="relative inline-block text-left w-full sm:w-48" id="searchable-year-container">
+                        <!-- Hidden select to keep backend form submit fully working -->
+                        <select name="year" id="real-year-select" class="hidden">
+                            <option value="">ทุกปีการตรวจ</option>
+                            @foreach ($years as $yr)
+                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
+                                    {{ $yr }}</option>
+                            @endforeach
+                        </select>
+
+                        <!-- Trigger Button -->
+                        <button type="button" id="year-dropdown-btn"
+                            class="flex items-center justify-between w-full text-left text-sm border border-gray-200 rounded-full px-5 py-2 bg-white text-gray-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200">
+                            <span id="selected-year-label" class="truncate">
+                                {{ request('year') ? 'ปี พ.ศ. ' . request('year') : 'ทุกปีการตรวจ' }}
+                            </span>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="year-dropdown-menu"
+                            class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
+                            <!-- List of options -->
+                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                                <button type="button" onclick="selectYear('')"
+                                    class="year-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    data-value="">
+                                    ทุกปีการตรวจ
+                                </button>
+                                @foreach ($years as $yr)
+                                    <button type="button" onclick="selectYear('{{ $yr }}')"
+                                        class="year-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == $yr ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        data-value="{{ $yr }}">
+                                        ปี พ.ศ. {{ $yr }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @else
                 <div class="flex gap-3">
-                    <select name="year"
-                        class="text-sm border-gray-200 rounded-full px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                        onchange="this.form.submit()">
-                        <option value="">ทุกปีการตรวจ</option>
-                        @foreach ($years as $yr)
-                            <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
-                                {{ $yr }}</option>
-                        @endforeach
-                    </select>
+                    <!-- Custom Year Dropdown for User -->
+                    <div class="relative inline-block text-left w-full sm:w-48" id="searchable-year-container">
+                        <!-- Hidden select to keep backend form submit fully working -->
+                        <select name="year" id="real-year-select" class="hidden">
+                            <option value="">ทุกปีการตรวจ</option>
+                            @foreach ($years as $yr)
+                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
+                                    {{ $yr }}</option>
+                            @endforeach
+                        </select>
+
+                        <!-- Trigger Button -->
+                        <button type="button" id="year-dropdown-btn"
+                            class="flex items-center justify-between w-full text-left text-sm border border-gray-200 rounded-full px-5 py-2 bg-white text-gray-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200">
+                            <span id="selected-year-label" class="truncate">
+                                {{ request('year') ? 'ปี พ.ศ. ' . request('year') : 'ทุกปีการตรวจ' }}
+                            </span>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="year-dropdown-menu"
+                            class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
+                            <!-- List of options -->
+                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                                <button type="button" onclick="selectYear('')"
+                                    class="year-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    data-value="">
+                                    ทุกปีการตรวจ
+                                </button>
+                                @foreach ($years as $yr)
+                                    <button type="button" onclick="selectYear('{{ $yr }}')"
+                                        class="year-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == $yr ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        data-value="{{ $yr }}">
+                                        ปี พ.ศ. {{ $yr }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 </div>
             @endif
 
@@ -186,8 +296,8 @@
                 <div class="space-y-1">
                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">อัปโหลดล่าสุด</p>
                     <h4 class="text-sm font-extrabold text-gray-700 leading-tight">
-                        @if ($files->first())
-                            {{ $files->first()->created_at->diffForHumans() }}
+                        @if ($lastUpload)
+                            {{ $lastUpload->created_at->diffForHumans() }}
                         @else
                             -
                         @endif
@@ -532,6 +642,87 @@
                     $('#delete-form-' + id).submit();
                 }
             });
+        }
+
+        /**
+         * การจัดการ Custom Dropdowns (แผนก & ปีการตรวจ) เพื่อความลื่นไหลและหรูหราพรีเมียม
+         */
+        $(document).ready(function() {
+            // 1. จัดการตัวเลือก แผนก
+            const $deptBtn = $('#dept-dropdown-btn');
+            const $deptMenu = $('#dept-dropdown-menu');
+            const $deptSearch = $('#dept-search-input');
+
+            if ($deptBtn.length) {
+                $deptBtn.on('click', function(e) {
+                    e.stopPropagation();
+                    $('#year-dropdown-menu').addClass('hidden'); // ปิดช่องปีถ้าเปิดค้างไว้
+                    $deptMenu.toggleClass('hidden');
+                    if (!$deptMenu.hasClass('hidden')) {
+                        $deptSearch.val('').trigger('input').focus();
+                    }
+                });
+
+                $deptSearch.on('input', function() {
+                    const searchVal = $(this).val().toLowerCase().trim();
+                    $('.dept-opt-btn').each(function() {
+                        const optText = $(this).text().toLowerCase();
+                        if (optText.includes(searchVal) || $(this).data('value') === '') {
+                            $(this).removeClass('hidden');
+                        } else {
+                            $(this).addClass('hidden');
+                        }
+                    });
+                });
+            }
+
+            // 2. จัดการตัวเลือก ปีการตรวจ
+            const $yearBtn = $('#year-dropdown-btn');
+            const $yearMenu = $('#year-dropdown-menu');
+
+            if ($yearBtn.length) {
+                $yearBtn.on('click', function(e) {
+                    e.stopPropagation();
+                    $deptMenu.addClass('hidden'); // ปิดช่องแผนกถ้าเปิดค้างไว้
+                    $yearMenu.toggleClass('hidden');
+                });
+            }
+
+            // 3. ปิดเมนูทั้งหมดเมื่อคลิกนอกพื้นที่ควบคุม
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#searchable-dept-container').length) {
+                    $deptMenu.addClass('hidden');
+                }
+                if (!$(e.target).closest('#searchable-year-container').length) {
+                    $yearMenu.addClass('hidden');
+                }
+            });
+
+            // 4. ปิดเมื่อกดปุ่ม ESC
+            $(document).keydown(function(e) {
+                if (e.keyCode === 27) {
+                    $deptMenu.addClass('hidden');
+                    $yearMenu.addClass('hidden');
+                }
+            });
+        });
+
+        /**
+         * เลือกแผนกจาก Dropdown คัสตอม
+         */
+        function selectDepartment(value) {
+            const $select = $('#real-dept-select');
+            $select.val(value);
+            $select.closest('form').submit();
+        }
+
+        /**
+         * เลือกปีจาก Dropdown คัสตอม
+         */
+        function selectYear(value) {
+            const $select = $('#real-year-select');
+            $select.val(value);
+            $select.closest('form').submit();
         }
     </script>
 @endsection

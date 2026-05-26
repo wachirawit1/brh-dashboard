@@ -53,7 +53,10 @@ class DashboardController extends Controller
         // 2. ดึงรายการไฟล์พร้อมชื่อผู้ใช้ที่อัปโหลด
         $files = $query->with('uploader')->orderBy('year', 'desc')->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('dashboard', compact('files', 'departments', 'years'));
+        // โคลนคิวรี่เพื่อดึงข้อมูลไฟล์อัปโหลดล่าสุดที่แท้จริงแบบไม่แบ่งหน้า
+        $lastUpload = (clone $query)->orderBy('created_at', 'desc')->first();
+
+        return view('dashboard', compact('files', 'departments', 'years', 'lastUpload'));
     }
 
     /**
