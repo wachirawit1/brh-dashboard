@@ -43,7 +43,7 @@ class DashboardController extends Controller
             $departments = collect([$user->dept_name]);
 
             $query->where('department', $user->dept_name)
-                  ->where('is_published', true);
+                ->where('is_published', true);
 
             if ($request->filled('year')) {
                 $query->where('year', $request->year);
@@ -82,7 +82,8 @@ class DashboardController extends Controller
             $scanReader = IOFactory::createReader($readerType);
             $scanReader->setReadDataOnly(true);
             $scanFilter = new class implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
-                public function readCell($columnAddress, $row, $worksheetName = ''): bool {
+                public function readCell($columnAddress, $row, $worksheetName = ''): bool
+                {
                     return $row <= 200;
                 }
             };
@@ -197,7 +198,8 @@ class DashboardController extends Controller
             // โหลดสไตล์ด้วยเพื่อรักษารูปแบบดั้งเดิมของตารางเวลาผู้ใช้ดาวน์โหลด
             $dlReader->setReadDataOnly(false);
             $dlFilter = new class implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
-                public function readCell($columnAddress, $row, $worksheetName = ''): bool {
+                public function readCell($columnAddress, $row, $worksheetName = ''): bool
+                {
                     return $row <= 5000;
                 }
             };
@@ -211,7 +213,7 @@ class DashboardController extends Controller
                 $this->trimEmptyRowsAndColumns($sheet);
             }
 
-            return response()->streamDownload(function() use ($spreadsheet) {
+            return response()->streamDownload(function () use ($spreadsheet) {
                 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
                 $writer->save('php://output');
             }, $file->original_name, [
@@ -255,7 +257,8 @@ class DashboardController extends Controller
             // อนุญาตให้โหลดรูปแบบเซลล์ (Styles) เพื่อการแสดงผลตารางพรีวิวและส่วนการผสานเซลล์ (Merge Cells) ที่สวยงามและถูกต้อง
             $pvReader->setReadDataOnly(false);
             $pvFilter = new class implements \PhpOffice\PhpSpreadsheet\Reader\IReadFilter {
-                public function readCell($columnAddress, $row, $worksheetName = ''): bool {
+                public function readCell($columnAddress, $row, $worksheetName = ''): bool
+                {
                     return $row <= 5000;
                 }
             };
@@ -281,7 +284,7 @@ class DashboardController extends Controller
                     if ($cell) {
                         $value = $cell->getValue();
                         $calculatedValue = null;
-                        
+
                         if (is_string($value) && strpos($value, '=') === 0) {
                             try {
                                 $calculatedValue = $cell->getCalculatedValue();
@@ -372,12 +375,14 @@ class DashboardController extends Controller
     {
         foreach ($spreadsheet->getAllSheets() as $sheet) {
             $sheetName = $sheet->getTitle();
-            
+
             // ข้ามหน้าสรุป หน้าสถิติ หรือหน้าภาพรวมทั้งหมดที่ไม่มีข้อมูลรายละเอียดของผู้ป่วยรายบุคคล
-            if (stripos($sheetName, 'สรุป') !== false || 
-                stripos($sheetName, 'summary') !== false || 
-                stripos($sheetName, 'dashboard') !== false || 
-                stripos($sheetName, 'total') !== false) {
+            if (
+                stripos($sheetName, 'สรุป') !== false ||
+                stripos($sheetName, 'summary') !== false ||
+                stripos($sheetName, 'dashboard') !== false ||
+                stripos($sheetName, 'total') !== false
+            ) {
                 continue;
             }
 
@@ -415,7 +420,7 @@ class DashboardController extends Controller
             $cell = $sheet->getCell($coordinate);
             if ($cell) {
                 $val = $cell->getValue();
-                
+
                 // ตรวจสอบสูตรคำนวณและค่าว่าง
                 $calculatedValue = null;
                 if (is_string($val) && strpos($val, '=') === 0) {
@@ -432,7 +437,7 @@ class DashboardController extends Controller
                 if ($strVal !== '') {
                     list($col, $row) = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($coordinate);
                     $colIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($col);
-                    
+
                     if ($row > $maxRow) {
                         $maxRow = $row;
                     }
