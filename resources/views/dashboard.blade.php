@@ -512,11 +512,7 @@
                         <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">สถานะ
                         </th>
                         <th class="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">
-                            @if (Auth::user()->role === 'admin')
-                                <th class="... text-right">ตรวจสอบ ดาวน์โหลด และลบไฟล์</th>
-                            @else
-                                <th class="... text-right">ตรวจสอบและดาวน์โหลด</th>
-                        @endif
+                            ตรวจสอบและดาวน์โหลด
                         </th>
                     </tr>
                 </thead>
