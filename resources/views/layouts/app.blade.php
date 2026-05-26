@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BRH Dashboard</title>
+    <title>รายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; transition: padding 0.3s; }
-        .sidebar-link:hover { background-color: #eff6ff; color: #1d4ed8; }
-        .sidebar-link.active { background-color: #eff6ff; color: #1d4ed8; border-right: 4px solid #1d4ed8; }
-        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: radial-gradient(circle at top left, #f8fafc 0%, #f1f5f9 100%);
+            transition: padding 0.3s; 
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .sidebar-link {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .sidebar-link:hover { 
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.8) 0%, rgba(219, 234, 254, 0.5) 100%);
+            color: #1d4ed8; 
+            transform: translateX(4px);
+        }
+        .sidebar-link.active { 
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); 
+            color: #1d4ed8; 
+            border-right: 4px solid #2563eb; 
+            font-weight: 600;
+            box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.08);
+        }
+
         /* สไตล์สำหรับแถบข้างที่ย่อ */
         .sidebar-collapsed aside { width: 4.5rem; }
         .sidebar-collapsed .sidebar-text { display: none; }
@@ -23,23 +43,48 @@
         .sidebar-collapsed aside .sidebar-link { justify-content: center; padding-left: 0; padding-right: 0; }
         .sidebar-collapsed aside .sidebar-link svg { margin-right: 0; }
         .sidebar-collapsed aside .logged-in-box { display: none; }
-        
+
         /* เพิ่ม Animation ให้ดูนุ่มนวล */
         aside { transition: width 0.3s ease; }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 <body class="flex min-h-screen">
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-gray-100 flex flex-col shadow-sm">
-        <div class="p-6">
-            <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">BRH</h1>
-            <p class="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">Dashboard</p>
-        </div>
+        <a href="{{ route('dashboard') }}" class="p-6 flex items-center gap-3 hover:opacity-80 transition group">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-9 w-auto object-contain shrink-0">
+            <div class="sidebar-text">
+                <h1 class="text-sm font-bold text-blue-600 tracking-tight leading-none group-hover:text-blue-700">ภาวะสุขภาพประจำปี</h1>
+                <p class="text-[9px] text-gray-400 mt-1 uppercase tracking-wider font-semibold group-hover:text-gray-500">รายงานสรุปรายหน่วยงาน</p>
+            </div>
+        </a>
 
         <nav class="flex-1 px-3 space-y-1">
             <a href="{{ route('dashboard') }}" class="sidebar-link flex items-center px-4 py-3 rounded-lg text-gray-600 transition {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="sidebar-text">Dashboard</span>
+                <span class="sidebar-text">
+                    @if(Auth::user()->role === 'admin')
+                        Dashboard
+                    @else
+                        รายการไฟล์
+                    @endif
+                </span>
             </a>
 
             @if(in_array(Auth::user()->role, ['admin', 'manager']))
@@ -49,10 +94,6 @@
             </a>
             @endif
 
-            <a href="#" class="sidebar-link flex items-center px-4 py-3 rounded-lg text-gray-600 transition">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                <span class="sidebar-text">รายงานแผนก</span>
-            </a>
         </nav>
 
         <div class="p-4 border-t border-gray-50">
@@ -60,7 +101,7 @@
                 <p class="text-xs text-gray-500">Logged in as:</p>
                 <p class="text-sm font-bold text-gray-800 truncate">{{ Auth::user()->name }}</p>
                 <p class="text-[10px] text-blue-500 uppercase font-bold mt-1">{{ Auth::user()->dept_name }}</p>
-                
+
                 <form action="{{ route('logout') }}" method="POST" class="mt-3">
                     @csrf
                     <button type="submit" class="text-xs text-red-500 font-bold hover:underline">ออกจากระบบ</button>

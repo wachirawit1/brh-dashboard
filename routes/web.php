@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
@@ -25,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/users', [AdminUserController::class, 'store'])->name('admin.users.store');
         Route::patch('/admin/users/{user}', [AdminUserController::class, 'updateRole'])->name('admin.users.update');
         Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
-        
+
         // นำเข้าข้อมูลผลตรวจสุขภาพและจัดการไฟล์สุขภาพ
         Route::post('/admin/health-files/upload', [DashboardController::class, 'upload'])->name('admin.health-files.upload');
         Route::post('/admin/health-files/{id}/publish', [DashboardController::class, 'publish'])->name('admin.health-files.publish');

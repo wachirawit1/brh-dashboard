@@ -5,25 +5,47 @@
 @section('content')
 <style>
     /* สไตล์คัสตอมสำหรับตารางพรีวิว Excel */
+    .excel-preview-container {
+        max-height: 60vh;
+        overflow: auto;
+        border-radius: 16px;
+        box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.02);
+        border: 1px solid #e2e8f0;
+    }
     .excel-preview-container table {
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         width: 100%;
         font-family: inherit;
         background-color: #ffffff;
         color: #374151;
     }
-    .excel-preview-container th, 
+    .excel-preview-container th {
+        position: sticky;
+        top: 0;
+        background-color: #f8fafc !important;
+        color: #475569 !important;
+        font-weight: 700 !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+        border-right: 1px solid #e2e8f0 !important;
+        padding: 10px 14px !important;
+        white-space: nowrap;
+        font-size: 0.75rem;
+        z-index: 20;
+    }
     .excel-preview-container td {
-        border: 1px solid #e2e8f0 !important;
-        padding: 8px 12px !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        border-right: 1px solid #e2e8f0 !important;
+        padding: 10px 14px !important;
         white-space: nowrap;
         font-size: 0.8rem;
+        transition: background-color 0.15s;
     }
     .excel-preview-container tr:nth-child(even) {
-        background-color: #f8fafc;
+        background-color: #f8fafc/50;
     }
-    .excel-preview-container tr:hover {
-        background-color: #f1f5f9;
+    .excel-preview-container tr:hover td {
+        background-color: #f1f5f9 !important;
     }
 </style>
 
@@ -94,6 +116,56 @@
         @endif
     </form>
 </div>
+
+@if(Auth::user()->role === 'admin')
+<!-- แผงรายงานสถิติย่อย (Sleek Stats Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <!-- Stat 1: Total Files -->
+    <div class="bg-gradient-to-br from-white to-slate-50/50 p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+        <div class="space-y-1">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">เอกสารสุขภาพทั้งหมด</p>
+            <h4 class="text-2xl font-black text-gray-800 tracking-tight">{{ $files->total() }} <span class="text-xs font-medium text-gray-400">ไฟล์</span></h4>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Stat 2: Active Departments -->
+    <div class="bg-gradient-to-br from-white to-slate-50/50 p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+        <div class="space-y-1">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">แผนกที่จัดเก็บ</p>
+            <h4 class="text-2xl font-black text-gray-800 tracking-tight">{{ count($departments) }} <span class="text-xs font-medium text-gray-400">แผนก</span></h4>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Stat 3: Last Upload -->
+    <div class="bg-gradient-to-br from-white to-slate-50/50 p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+        <div class="space-y-1">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">อัปโหลดล่าสุด</p>
+            <h4 class="text-sm font-extrabold text-gray-700 leading-tight">
+                @if($files->first())
+                    {{ $files->first()->created_at->diffForHumans() }}
+                @else
+                    -
+                @endif
+            </h4>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+    </div>
+</div>
+@endif
 
 <!-- ตารางรายการไฟล์แบบ Google Drive -->
 <div class="bg-white rounded-3xl shadow-xl shadow-gray-100 overflow-hidden border border-gray-100">
@@ -338,6 +410,22 @@
     function closePreview() {
         $('#preview-modal').addClass('hidden').removeClass('flex');
     }
+
+    // ปิดหน้าต่างพรีวิวเมื่อกด ESC
+    $(document).keydown(function(e) {
+        if (e.keyCode === 27) {
+            closePreview();
+        }
+    });
+
+    // ปิดหน้าต่างพรีวิวเมื่อคลิกนอก Modal Card (Backdrop click)
+    $(document).ready(function() {
+        $('#preview-modal').on('click', function(e) {
+            if (e.target === this) {
+                closePreview();
+            }
+        });
+    });
 
     /**
      * ลบไฟล์พร้อมแจ้งยืนยันด้วย SweetAlert2
