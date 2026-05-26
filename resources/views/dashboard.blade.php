@@ -46,11 +46,50 @@
         }
 
         .excel-preview-container tr:nth-child(even) {
-            background-color: #f8fafc/50;
+            background-color: rgba(248, 250, 252, 0.5);
         }
 
         .excel-preview-container tr:hover td {
             background-color: #f1f5f9 !important;
+        }
+
+        /* สไตล์อนิเมชั่นและคลาสสำหรับ Dropdown คัสตอม */
+        @keyframes fadeScaleIn {
+            from {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeScaleIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* ปรับแต่งแถบสกรอล (Scrollbar) สำหรับเมนูดร็อปดาวน์คัสตอม */
+        #dept-options-list::-webkit-scrollbar,
+        #year-options-list::-webkit-scrollbar,
+        #status-options-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #dept-options-list::-webkit-scrollbar-track,
+        #year-options-list::-webkit-scrollbar-track,
+        #status-options-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #dept-options-list::-webkit-scrollbar-thumb,
+        #year-options-list::-webkit-scrollbar-thumb,
+        #status-options-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 99px;
+        }
+        #dept-options-list::-webkit-scrollbar-thumb:hover,
+        #year-options-list::-webkit-scrollbar-thumb:hover,
+        #status-options-list::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 
@@ -133,21 +172,31 @@
                                     </svg>
                                 </span>
                                 <input type="text" id="dept-search-input" placeholder="พิมพ์ค้นหาแผนกด่วน..."
-                                    class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-semibold">
+                                    class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-semibold">
                             </div>
 
                             <!-- List of options -->
-                            <div id="dept-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                            <div id="dept-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectDepartment('')"
-                                    class="dept-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('department') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    class="dept-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('department') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
-                                    ทุกแผนก
+                                    <span>ทุกแผนก</span>
+                                    @if (request('department') == '')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
                                 </button>
                                 @foreach ($departments as $dept)
                                     <button type="button" onclick="selectDepartment('{{ $dept }}')"
-                                        class="dept-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('department') == $dept ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        class="dept-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('department') == $dept ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                         data-value="{{ $dept }}">
-                                        {{ $dept }}
+                                        <span class="truncate">{{ $dept }}</span>
+                                        @if (request('department') == $dept)
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        @endif
                                     </button>
                                 @endforeach
                             </div>
@@ -180,19 +229,94 @@
                         <div id="year-dropdown-menu"
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- List of options -->
-                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectYear('')"
-                                    class="year-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
-                                    ทุกปีการตรวจ
+                                    <span>ทุกปีการตรวจ</span>
+                                    @if (request('year') == '')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
                                 </button>
                                 @foreach ($years as $yr)
                                     <button type="button" onclick="selectYear('{{ $yr }}')"
-                                        class="year-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == $yr ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == $yr ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                         data-value="{{ $yr }}">
-                                        ปี พ.ศ. {{ $yr }}
+                                        <span>ปี พ.ศ. {{ $yr }}</span>
+                                        @if (request('year') == $yr)
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        @endif
                                     </button>
                                 @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Status Dropdown for Admin -->
+                    <div class="relative inline-block text-left w-full sm:w-48" id="searchable-status-container">
+                        <!-- Hidden select to keep backend form submit fully working -->
+                        <select name="status" id="real-status-select" class="hidden">
+                            <option value="">ทุกสถานะ</option>
+                            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>เผยแพร่แล้ว</option>
+                            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>แบบร่าง (รอส่ง)</option>
+                        </select>
+
+                        <!-- Trigger Button -->
+                        <button type="button" id="status-dropdown-btn"
+                            class="flex items-center justify-between w-full text-left text-sm border border-gray-200 rounded-full px-5 py-2 bg-white text-gray-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200">
+                            <span id="selected-status-label" class="truncate">
+                                @if(request('status') == 'published')
+                                    เผยแพร่แล้ว
+                                @elseif(request('status') == 'draft')
+                                    แบบร่าง (รอส่ง)
+                                @else
+                                    ทุกสถานะ
+                                @endif
+                            </span>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="status-dropdown-menu"
+                            class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
+                            <!-- List of options -->
+                            <div id="status-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
+                                <button type="button" onclick="selectStatus('')"
+                                    class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
+                                    data-value="">
+                                    <span>ทุกสถานะ</span>
+                                    @if(request('status') == '')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
+                                </button>
+                                <button type="button" onclick="selectStatus('published')"
+                                    class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == 'published' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
+                                    data-value="published">
+                                    <span>เผยแพร่แล้ว</span>
+                                    @if(request('status') == 'published')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
+                                </button>
+                                <button type="button" onclick="selectStatus('draft')"
+                                    class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == 'draft' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
+                                    data-value="draft">
+                                    <span>แบบร่าง (รอส่ง)</span>
+                                    @if(request('status') == 'draft')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -225,17 +349,27 @@
                         <div id="year-dropdown-menu"
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- List of options -->
-                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1">
+                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectYear('')"
-                                    class="year-opt-btn w-full text-left px-3 py-2 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == '' ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                    class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
-                                    ทุกปีการตรวจ
+                                    <span>ทุกปีการตรวจ</span>
+                                    @if (request('year') == '')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @endif
                                 </button>
                                 @foreach ($years as $yr)
                                     <button type="button" onclick="selectYear('{{ $yr }}')"
-                                        class="year-opt-btn w-full text-left px-3 py-2.5 text-xs font-semibold text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition {{ request('year') == $yr ? 'bg-blue-50/50 text-blue-700' : '' }}"
+                                        class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == $yr ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                         data-value="{{ $yr }}">
-                                        ปี พ.ศ. {{ $yr }}
+                                        <span>ปี พ.ศ. {{ $yr }}</span>
+                                        @if (request('year') == $yr)
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        @endif
                                     </button>
                                 @endforeach
                             </div>
@@ -244,7 +378,7 @@
                 </div>
             @endif
 
-            @if (request('department') || request('year'))
+            @if (request('department') || request('year') || request('status'))
                 <a href="{{ route('dashboard') }}"
                     class="text-sm text-red-500 hover:text-red-700 font-semibold ml-2 transition">ล้างตัวกรอง</a>
             @endif
@@ -645,7 +779,7 @@
         }
 
         /**
-         * การจัดการ Custom Dropdowns (แผนก & ปีการตรวจ) เพื่อความลื่นไหลและหรูหราพรีเมียม
+         * การจัดการ Custom Dropdowns (แผนก & ปีการตรวจ & สถานะเผยแพร่) เพื่อความลื่นไหลและหรูหราพรีเมียม
          */
         $(document).ready(function() {
             // 1. จัดการตัวเลือก แผนก
@@ -657,6 +791,7 @@
                 $deptBtn.on('click', function(e) {
                     e.stopPropagation();
                     $('#year-dropdown-menu').addClass('hidden'); // ปิดช่องปีถ้าเปิดค้างไว้
+                    $('#status-dropdown-menu').addClass('hidden'); // ปิดช่องสถานะถ้าเปิดค้างไว้
                     $deptMenu.toggleClass('hidden');
                     if (!$deptMenu.hasClass('hidden')) {
                         $deptSearch.val('').trigger('input').focus();
@@ -684,11 +819,25 @@
                 $yearBtn.on('click', function(e) {
                     e.stopPropagation();
                     $deptMenu.addClass('hidden'); // ปิดช่องแผนกถ้าเปิดค้างไว้
+                    $('#status-dropdown-menu').addClass('hidden'); // ปิดช่องสถานะถ้าเปิดค้างไว้
                     $yearMenu.toggleClass('hidden');
                 });
             }
 
-            // 3. ปิดเมนูทั้งหมดเมื่อคลิกนอกพื้นที่ควบคุม
+            // 3. จัดการตัวเลือก สถานะเผยแพร่ (สำหรับ Admin)
+            const $statusBtn = $('#status-dropdown-btn');
+            const $statusMenu = $('#status-dropdown-menu');
+
+            if ($statusBtn.length) {
+                $statusBtn.on('click', function(e) {
+                    e.stopPropagation();
+                    $deptMenu.addClass('hidden'); // ปิดช่องแผนกถ้าเปิดค้างไว้
+                    $yearMenu.addClass('hidden'); // ปิดช่องปีถ้าเปิดค้างไว้
+                    $statusMenu.toggleClass('hidden');
+                });
+            }
+
+            // 4. ปิดเมนูทั้งหมดเมื่อคลิกนอกพื้นที่ควบคุม
             $(document).on('click', function(e) {
                 if (!$(e.target).closest('#searchable-dept-container').length) {
                     $deptMenu.addClass('hidden');
@@ -696,13 +845,17 @@
                 if (!$(e.target).closest('#searchable-year-container').length) {
                     $yearMenu.addClass('hidden');
                 }
+                if (!$(e.target).closest('#searchable-status-container').length) {
+                    $statusMenu.addClass('hidden');
+                }
             });
 
-            // 4. ปิดเมื่อกดปุ่ม ESC
+            // 5. ปิดเมื่อกดปุ่ม ESC
             $(document).keydown(function(e) {
                 if (e.keyCode === 27) {
                     $deptMenu.addClass('hidden');
                     $yearMenu.addClass('hidden');
+                    $statusMenu.addClass('hidden');
                 }
             });
         });
@@ -721,6 +874,15 @@
          */
         function selectYear(value) {
             const $select = $('#real-year-select');
+            $select.val(value);
+            $select.closest('form').submit();
+        }
+
+        /**
+         * เลือกสถานะจาก Dropdown คัสตอม
+         */
+        function selectStatus(value) {
+            const $select = $('#real-status-select');
             $select.val(value);
             $select.closest('form').submit();
         }

@@ -31,6 +31,13 @@ class DashboardController extends Controller
             if ($request->filled('year')) {
                 $query->where('year', $request->year);
             }
+            if ($request->filled('status')) {
+                if ($request->status === 'published') {
+                    $query->where('is_published', true);
+                } elseif ($request->status === 'draft') {
+                    $query->where('is_published', false);
+                }
+            }
         } else {
             // ถ้าเป็นผู้ใช้ทั่วไป เห็นเฉพาะแผนกตัวเองและไฟล์ที่เผยแพร่ (Publish) แล้วเท่านั้น
             $years = HealthFile::where('department', $user->dept_name)
