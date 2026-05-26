@@ -195,7 +195,7 @@
 
         <footer class="py-6 px-8 border-t border-gray-50 bg-white/50 backdrop-blur-sm text-center text-xs text-gray-400 font-semibold flex flex-col sm:flex-row justify-between items-center gap-2">
             <div>
-                © {{ date('Y') }} ระบบรายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน โรงพยาบาลบุรีรัมย์.
+                © {{ date('Y') }} ศูนย์รายงานข้อมูลภาวะสุขภาพประจำปี บุคลากร รพ.บุรีรัมย์รายหน่วยงาน ติดต่อสอบเพิ่มเติม คุณพรวดี กง.อาชีวเวชกรรม โทร. 3538
             </div>
             <div class="flex items-center gap-1.5">
                 <span>พัฒนาโดย</span>

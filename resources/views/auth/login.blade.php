@@ -42,7 +42,7 @@
                 </div>
                 <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight leading-tight">
                     รายงานสรุปภาวะสุขภาพประจำปี</h1>
-                <p class="text-blue-600 font-bold text-xs uppercase tracking-wider mt-1.5">รายหน่วยงาน</p>
+                <p class="text-blue-600 font-bold text-xs uppercase tracking-wider mt-1.5">บุคลากร รพ.บุรีรัมย์รายหน่วยงาน</p>
             </a>
         </div>
 
@@ -50,16 +50,29 @@
             @csrf
             <div>
                 <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">Username</label>
-                <input type="text" name="username"
+                <input type="text" name="username" value="{{ old('username') }}"
                     class="w-full px-4 py-3 bg-white/60 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                     required>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">Password</label>
-                <input type="password" name="password"
-                    class="w-full px-4 py-3 bg-white/60 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                    required>
+                <div class="relative">
+                    <input type="password" name="password" id="password-input"
+                        class="w-full pl-4 pr-11 py-3 bg-white/60 border border-gray-200/80 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                        required>
+                    <button type="button" id="toggle-password-btn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition">
+                        <!-- Eye Icon (Show) -->
+                        <svg id="eye-show-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        <!-- Eye Off Icon (Hide) -->
+                        <svg id="eye-hide-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <button type="submit"
@@ -84,7 +97,7 @@
     <!-- Footer Credit -->
     <footer class="w-full max-w-md text-center text-xs text-white/70 font-medium py-4">
         <div>
-            © {{ date('Y') }} ระบบรายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน โรงพยาบาลบุรีรัมย์.
+            © {{ date('Y') }} ศูนย์รายงานข้อมูลภาวะสุขภาพประจำปี บุคลากร รพ.บุรีรัมย์รายหน่วยงาน ติดต่อสอบเพิ่มเติม คุณพรวดี กง.อาชีวเวชกรรม โทร. 3538
         </div>
         <div class="mt-1">
             พัฒนาโดย <span class="text-blue-200 font-bold hover:text-blue-300 transition cursor-pointer">กลุ่มงานสุขภาพดิจิทัล</span>
@@ -112,6 +125,26 @@
                 });
             @endforeach
         @endif
+
+        // ระบบเปิด/ปิด การมองเห็นรหัสผ่าน (เพิ่มลูกตา)
+        const toggleBtn = document.getElementById('toggle-password-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                const pwdInput = document.getElementById('password-input');
+                const eyeShow = document.getElementById('eye-show-icon');
+                const eyeHide = document.getElementById('eye-hide-icon');
+                
+                if (pwdInput.type === 'password') {
+                    pwdInput.type = 'text';
+                    eyeShow.classList.add('hidden');
+                    eyeHide.classList.remove('hidden');
+                } else {
+                    pwdInput.type = 'password';
+                    eyeHide.classList.add('hidden');
+                    eyeShow.classList.remove('hidden');
+                }
+            });
+        }
     </script>
 </body>
 

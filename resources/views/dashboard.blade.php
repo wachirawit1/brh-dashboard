@@ -59,6 +59,7 @@
                 opacity: 0;
                 transform: translateY(-8px) scale(0.97);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -75,17 +76,20 @@
         #status-options-list::-webkit-scrollbar {
             width: 6px;
         }
+
         #dept-options-list::-webkit-scrollbar-track,
         #year-options-list::-webkit-scrollbar-track,
         #status-options-list::-webkit-scrollbar-track {
             background: transparent;
         }
+
         #dept-options-list::-webkit-scrollbar-thumb,
         #year-options-list::-webkit-scrollbar-thumb,
         #status-options-list::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 99px;
         }
+
         #dept-options-list::-webkit-scrollbar-thumb:hover,
         #year-options-list::-webkit-scrollbar-thumb:hover,
         #status-options-list::-webkit-scrollbar-thumb:hover {
@@ -93,14 +97,17 @@
         }
     </style>
 
-    <div class="mb-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+    <div class="mb-8 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-6">
+
         <div>
-            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">ศูนย์จัดเก็บข้อมูลสุขภาพพนักงาน</h2>
-            <p class="text-gray-500 mt-1">ดาวน์โหลดและตรวจเช็คผลตรวจสุขภาพประจำปีแยกตามแผนกและปีงบประมาณ</p>
+            <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">ศูนย์รายงานข้อมูลภาวะสุขภาพประจำปีบุคลากร
+                รพ.บุรีรัมย์รายหน่วยงาน</h2>
+            <p class="text-gray-500 mt-1">ดาวน์โหลดรายงานสรุปภาวะสุขภาพประจำปีแยกตามแผนกและปีงบประมาณ</p>
         </div>
 
+
         @if (Auth::user()->role === 'admin')
-            <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 w-full lg:w-auto">
+            <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 w-full xl:w-auto">
                 <form action="{{ route('admin.health-files.upload') }}" method="POST" enctype="multipart/form-data"
                     class="flex flex-col sm:flex-row items-center gap-4">
                     @csrf
@@ -113,7 +120,7 @@
                             required>
                     </div>
                     <button type="submit"
-                        class="w-full sm:w-auto sm:mt-5 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition flex items-center justify-center gap-2 shadow-sm">
+                        class="w-full sm:w-auto sm:mt-5 shrink-0 whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition flex items-center justify-center gap-2 shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
@@ -156,8 +163,10 @@
                             <span id="selected-dept-label" class="truncate">
                                 {{ request('department') ?: 'ทุกแผนก' }}
                             </span>
-                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                </path>
                             </svg>
                         </button>
 
@@ -166,9 +175,11 @@
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- Search Input -->
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                                <span
+                                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </span>
                                 <input type="text" id="dept-search-input" placeholder="พิมพ์ค้นหาแผนกด่วน..."
@@ -176,14 +187,17 @@
                             </div>
 
                             <!-- List of options -->
-                            <div id="dept-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
+                            <div id="dept-options-list"
+                                class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectDepartment('')"
                                     class="dept-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('department') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
                                     <span>ทุกแผนก</span>
                                     @if (request('department') == '')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -193,8 +207,10 @@
                                         data-value="{{ $dept }}">
                                         <span class="truncate">{{ $dept }}</span>
                                         @if (request('department') == $dept)
-                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M5 13l4 4L19 7"></path>
                                             </svg>
                                         @endif
                                     </button>
@@ -209,7 +225,8 @@
                         <select name="year" id="real-year-select" class="hidden">
                             <option value="">ทุกปีการตรวจ</option>
                             @foreach ($years as $yr)
-                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
+                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี
+                                    พ.ศ.
                                     {{ $yr }}</option>
                             @endforeach
                         </select>
@@ -220,8 +237,10 @@
                             <span id="selected-year-label" class="truncate">
                                 {{ request('year') ? 'ปี พ.ศ. ' . request('year') : 'ทุกปีการตรวจ' }}
                             </span>
-                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                </path>
                             </svg>
                         </button>
 
@@ -229,14 +248,17 @@
                         <div id="year-dropdown-menu"
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- List of options -->
-                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
+                            <div id="year-options-list"
+                                class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectYear('')"
                                     class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
                                     <span>ทุกปีการตรวจ</span>
                                     @if (request('year') == '')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -246,8 +268,10 @@
                                         data-value="{{ $yr }}">
                                         <span>ปี พ.ศ. {{ $yr }}</span>
                                         @if (request('year') == $yr)
-                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M5 13l4 4L19 7"></path>
                                             </svg>
                                         @endif
                                     </button>
@@ -261,15 +285,17 @@
                         <!-- Hidden select to keep backend form submit fully working -->
                         <select name="status" id="real-status-select" class="hidden">
                             <option value="">ทุกสถานะ</option>
-                            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>เผยแพร่แล้ว</option>
-                            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>แบบร่าง (รอส่ง)</option>
+                            <option value="published" {{ request('status') == 'published' ? 'selected' : '' }}>เผยแพร่แล้ว
+                            </option>
+                            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>แบบร่าง (รอส่ง)
+                            </option>
                         </select>
 
                         <!-- Trigger Button -->
                         <button type="button" id="status-dropdown-btn"
                             class="flex items-center justify-between w-full text-left text-sm border border-gray-200 rounded-full px-5 py-2 bg-white text-gray-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all duration-200">
                             <span id="selected-status-label" class="truncate">
-                                @if(request('status') == 'published')
+                                @if (request('status') == 'published')
                                     เผยแพร่แล้ว
                                 @elseif(request('status') == 'draft')
                                     แบบร่าง (รอส่ง)
@@ -277,8 +303,10 @@
                                     ทุกสถานะ
                                 @endif
                             </span>
-                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                </path>
                             </svg>
                         </button>
 
@@ -286,14 +314,17 @@
                         <div id="status-dropdown-menu"
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- List of options -->
-                            <div id="status-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
+                            <div id="status-options-list"
+                                class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectStatus('')"
                                     class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
                                     <span>ทุกสถานะ</span>
-                                    @if(request('status') == '')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                    @if (request('status') == '')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -301,9 +332,11 @@
                                     class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == 'published' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="published">
                                     <span>เผยแพร่แล้ว</span>
-                                    @if(request('status') == 'published')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                    @if (request('status') == 'published')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -311,9 +344,11 @@
                                     class="status-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('status') == 'draft' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="draft">
                                     <span>แบบร่าง (รอส่ง)</span>
-                                    @if(request('status') == 'draft')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                    @if (request('status') == 'draft')
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -329,7 +364,8 @@
                         <select name="year" id="real-year-select" class="hidden">
                             <option value="">ทุกปีการตรวจ</option>
                             @foreach ($years as $yr)
-                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี พ.ศ.
+                                <option value="{{ $yr }}" {{ request('year') == $yr ? 'selected' : '' }}>ปี
+                                    พ.ศ.
                                     {{ $yr }}</option>
                             @endforeach
                         </select>
@@ -340,8 +376,10 @@
                             <span id="selected-year-label" class="truncate">
                                 {{ request('year') ? 'ปี พ.ศ. ' . request('year') : 'ทุกปีการตรวจ' }}
                             </span>
-                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            <svg class="w-4 h-4 text-gray-400 shrink-0 ml-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                                </path>
                             </svg>
                         </button>
 
@@ -349,14 +387,17 @@
                         <div id="year-dropdown-menu"
                             class="hidden absolute left-0 right-0 mt-2 w-full bg-white rounded-2xl shadow-xl border border-gray-100 z-50 p-3 animate-fade-in flex flex-col gap-2 max-h-72">
                             <!-- List of options -->
-                            <div id="year-options-list" class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
+                            <div id="year-options-list"
+                                class="overflow-y-auto divide-y divide-gray-50 max-h-48 pr-1 flex flex-col gap-1">
                                 <button type="button" onclick="selectYear('')"
                                     class="year-opt-btn w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition duration-150 {{ request('year') == '' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600 hover:bg-slate-50 hover:text-gray-900' }}"
                                     data-value="">
                                     <span>ทุกปีการตรวจ</span>
                                     @if (request('year') == '')
-                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                        <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M5 13l4 4L19 7"></path>
                                         </svg>
                                     @endif
                                 </button>
@@ -366,8 +407,10 @@
                                         data-value="{{ $yr }}">
                                         <span>ปี พ.ศ. {{ $yr }}</span>
                                         @if (request('year') == $yr)
-                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                            <svg class="w-4 h-4 text-blue-600 flex-shrink-0 ml-2" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M5 13l4 4L19 7"></path>
                                             </svg>
                                         @endif
                                     </button>
@@ -588,7 +631,8 @@
         </div>
 
         @if ($files->hasPages())
-            <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30" id="pagination-footer">
+            <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30"
+                id="pagination-footer">
                 <div class="text-sm text-gray-500 font-medium" id="pagination-info">
                     แสดง {{ $files->firstItem() }} - {{ $files->lastItem() }} จากทั้งหมด {{ $files->total() }} รายการ
                 </div>
@@ -597,13 +641,16 @@
                     @if ($files->onFirstPage())
                         <span class="p-2 rounded-xl border text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </span>
                     @else
-                        <a href="{{ $files->appends(request()->query())->previousPageUrl() }}" class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                        <a href="{{ $files->appends(request()->query())->previousPageUrl() }}"
+                            class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
                             </svg>
                         </a>
                     @endif
@@ -611,11 +658,13 @@
                     <!-- Page Numbers -->
                     @for ($i = 1; $i <= $files->lastPage(); $i++)
                         @if ($i == $files->currentPage())
-                            <span class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100">
+                            <span
+                                class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100">
                                 {{ $i }}
                             </span>
                         @else
-                            <a href="{{ $files->appends(request()->query())->url($i) }}" class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                            <a href="{{ $files->appends(request()->query())->url($i) }}"
+                                class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
                                 {{ $i }}
                             </a>
                         @endif
@@ -623,15 +672,18 @@
 
                     <!-- Next Page Button -->
                     @if ($files->hasMorePages())
-                        <a href="{{ $files->appends(request()->query())->nextPageUrl() }}" class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                        <a href="{{ $files->appends(request()->query())->nextPageUrl() }}"
+                            class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
                             </svg>
                         </a>
                     @else
                         <span class="p-2 rounded-xl border text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
                             </svg>
                         </span>
                     @endif
@@ -746,7 +798,7 @@
                         $('#preview-loading').addClass('hidden');
                         $('#preview-sheet-data').removeClass('hidden').html(
                             '<div class="text-center py-10 text-red-500 font-semibold">ไม่พบข้อมูลชีทภายในไฟล์ Excel</div>'
-                            );
+                        );
                     }
                 },
                 error: function(xhr) {
