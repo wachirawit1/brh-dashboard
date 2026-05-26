@@ -169,27 +169,39 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto">
-        <header
-            class="bg-white/80 backdrop-blur-md sticky top-0 z-10 px-8 py-4 border-b border-gray-100 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <button id="toggle-sidebar"
-                    class="text-gray-500 hover:text-blue-600 focus:outline-none transition p-1 hover:bg-blue-50 rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-                <h2 class="text-lg font-semibold text-gray-800">@yield('page_title')</h2>
-            </div>
-            <!-- <div class="flex items-center gap-4">
-                <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">System Online</span>
-            </div> -->
-        </header>
+    <main class="flex-1 overflow-y-auto flex flex-col justify-between">
+        <div class="flex-1">
+            <header
+                class="bg-white/80 backdrop-blur-md sticky top-0 z-10 px-8 py-4 border-b border-gray-100 flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button id="toggle-sidebar"
+                        class="text-gray-500 hover:text-blue-600 focus:outline-none transition p-1 hover:bg-blue-50 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                    <h2 class="text-lg font-semibold text-gray-800">@yield('page_title')</h2>
+                </div>
+                <!-- <div class="flex items-center gap-4">
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">System Online</span>
+                </div> -->
+            </header>
 
-        <div class="p-8">
-            @yield('content')
+            <div class="p-8">
+                @yield('content')
+            </div>
         </div>
+
+        <footer class="py-6 px-8 border-t border-gray-50 bg-white/50 backdrop-blur-sm text-center text-xs text-gray-400 font-semibold flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                © {{ date('Y') }} ระบบรายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน โรงพยาบาลบุรีรัมย์.
+            </div>
+            <div class="flex items-center gap-1.5">
+                <span>พัฒนาโดย</span>
+                <span class="text-blue-600 font-bold hover:text-blue-700 transition cursor-pointer">กลุ่มงานสุขภาพดิจิทัล</span>
+            </div>
+        </footer>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

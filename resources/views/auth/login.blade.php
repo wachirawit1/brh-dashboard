@@ -29,9 +29,12 @@
     </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex flex-col items-center justify-between min-h-screen p-4">
+    <!-- Top Spacer to keep card centered -->
+    <div class="flex-1"></div>
+
     <div
-        class="bg-white/85 backdrop-blur-xl p-8 rounded-3xl border border-white/40 shadow-2xl w-full max-w-md transition-all duration-300 hover:shadow-blue-500/10">
+        class="bg-white/85 backdrop-blur-xl p-8 rounded-3xl border border-white/40 shadow-2xl w-full max-w-md transition-all duration-300 hover:shadow-blue-500/10 my-8">
         <div class="text-center mb-8">
             <a href="{{ url('/') }}" class="inline-block group transition hover:opacity-85">
                 <div class="inline-flex items-center justify-center mb-4 transition">
@@ -41,7 +44,6 @@
                     รายงานสรุปภาวะสุขภาพประจำปี</h1>
                 <p class="text-blue-600 font-bold text-xs uppercase tracking-wider mt-1.5">รายหน่วยงาน</p>
             </a>
-            <p class="text-gray-500 text-sm mt-3">กรุณาเข้าสู่ระบบด้วยบัญชีของแต่ละหน่วยงาน</p>
         </div>
 
         <form action="{{ route('login.post') }}" method="POST" class="space-y-5">
@@ -64,8 +66,30 @@
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30">
                 เข้าสู่ระบบ
             </button>
+
+            <div class="pt-4 border-t border-gray-100/60 text-center mt-5">
+                <p class="text-[11px] text-gray-400 font-semibold flex items-center justify-center gap-1.5">
+                    <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    พบปัญหาการเข้าใช้งาน ติดต่อเบอร์ภายใน 2079 หรือ 2081
+                </p>
+            </div>
         </form>
     </div>
+
+    <!-- Bottom Spacer to keep card centered -->
+    <div class="flex-1"></div>
+
+    <!-- Footer Credit -->
+    <footer class="w-full max-w-md text-center text-xs text-white/70 font-medium py-4">
+        <div>
+            © {{ date('Y') }} ระบบรายงานสรุปภาวะสุขภาพประจำปี รายหน่วยงาน โรงพยาบาลบุรีรัมย์.
+        </div>
+        <div class="mt-1">
+            พัฒนาโดย <span class="text-blue-200 font-bold hover:text-blue-300 transition cursor-pointer">กลุ่มงานสุขภาพดิจิทัล</span>
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const Toast = Swal.mixin({
