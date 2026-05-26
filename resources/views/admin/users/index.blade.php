@@ -19,11 +19,13 @@
 
     <div class="bg-white rounded-3xl shadow-xl shadow-gray-100 overflow-hidden border border-gray-100">
         <!-- ช่องค้นหา (Search Panel) -->
-        <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+        <div
+            class="p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
             <div class="relative flex-1 max-w-md">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-gray-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </span>
                 <input type="text" id="user-search-input" placeholder="ค้นหาชื่อหน่วยงาน, แผนก หรือ Username..."
@@ -37,17 +39,18 @@
         <table class="w-full text-left" id="users-table">
             <thead class="bg-gray-50 border-b border-gray-100">
                 <tr>
-                    <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">ชื่อ-นามสกุล/แผนก</th>
+                    <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">ชื่อ-นามสกุล/แผนก
+                    </th>
                     <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">Username</th>
                     <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">แผนกที่สังกัด</th>
                     <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">ระดับสิทธิ์</th>
-                    <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">จัดการ</th>
+                    <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">จัดการ
+                    </th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
                 @forelse($users as $user)
-                    <tr class="hover:bg-blue-50/30 transition user-row"
-                        data-name="{{ strtolower($user->name) }}"
+                    <tr class="hover:bg-blue-50/30 transition user-row" data-name="{{ strtolower($user->name) }}"
                         data-username="{{ strtolower($user->username) }}"
                         data-dept="{{ strtolower($user->dept_name ?? '') }}">
                         <td class="px-8 py-4 font-semibold text-gray-800">{{ $user->name }}</td>
@@ -55,16 +58,21 @@
                         <td class="px-8 py-4 text-sm text-gray-500">{{ $user->dept_name ?? '-' }}</td>
                         <td class="px-8 py-4">
                             @if ($user->role === 'admin')
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                        </path>
                                     </svg>
                                     แอดมิน
                                 </span>
                             @else
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600">
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-600">
                                     <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                     </svg>
                                     ผู้ใช้งาน
                                 </span>
@@ -72,7 +80,8 @@
                         </td>
                         <td class="px-8 py-4 text-right">
                             @if ($user->username !== Auth::user()->username)
-                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="delete-user-form">
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                    class="delete-user-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button"
@@ -85,19 +94,22 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-8 py-20 text-center text-gray-400">ยังไม่มีผู้ใช้งานในระบบ (นอกจากคุณ)</td>
+                        <td colspan="5" class="px-8 py-20 text-center text-gray-400">ยังไม่มีผู้ใช้งานในระบบ (นอกจากคุณ)
+                        </td>
                     </tr>
                 @endforelse
 
                 <!-- แถวกรณีหาไม่พบข้อมูลค้นหา -->
                 <tr id="no-search-results" class="hidden">
-                    <td colspan="5" class="px-8 py-20 text-center text-gray-400 font-medium">ไม่พบข้อมูลผู้ใช้งานที่ตรงตามคำค้นหา</td>
+                    <td colspan="5" class="px-8 py-20 text-center text-gray-400 font-medium">
+                        ไม่พบข้อมูลผู้ใช้งานที่ตรงตามคำค้นหา</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- แถบควบคุมการแบ่งหน้า (Pagination Footer) -->
-        <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30" id="pagination-footer">
+        <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30"
+            id="pagination-footer">
             <div class="text-sm text-gray-500 font-medium" id="pagination-info">
                 กำลังคำนวณหน้า...
             </div>
@@ -177,7 +189,8 @@
                 // ปรับปรุงข้อมูลคำแนะนำจำนวนหน้า
                 const displayStart = startIndex + 1;
                 const displayEnd = Math.min(endIndex, totalItems);
-                paginationInfo.textContent = `แสดง ${displayStart} - ${displayEnd} จากทั้งหมด ${totalItems} รายชื่อ`;
+                paginationInfo.textContent =
+                `แสดง ${displayStart} - ${displayEnd} จากทั้งหมด ${totalItems} รายชื่อ`;
 
                 // สร้างปุ่มนำทาง (Pagination Buttons)
                 paginationButtons.innerHTML = '';
@@ -189,7 +202,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                 `;
-                prevBtn.className = `p-2 rounded-xl border transition duration-150 ${currentPage === 1 ? 'text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
+                prevBtn.className =
+                    `p-2 rounded-xl border transition duration-150 ${currentPage === 1 ? 'text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
                 if (currentPage > 1) {
                     prevBtn.addEventListener('click', () => {
                         currentPage--;
@@ -202,7 +216,8 @@
                 for (let i = 1; i <= totalPages; i++) {
                     const pageBtn = document.createElement('button');
                     pageBtn.textContent = i;
-                    pageBtn.className = `w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border transition duration-150 ${currentPage === i ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
+                    pageBtn.className =
+                        `w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border transition duration-150 ${currentPage === i ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
                     pageBtn.addEventListener('click', () => {
                         currentPage = i;
                         updateTable();
@@ -217,7 +232,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 `;
-                nextBtn.className = `p-2 rounded-xl border transition duration-150 ${currentPage === totalPages ? 'text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
+                nextBtn.className =
+                    `p-2 rounded-xl border transition duration-150 ${currentPage === totalPages ? 'text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`;
                 if (currentPage < totalPages) {
                     nextBtn.addEventListener('click', () => {
                         currentPage++;
@@ -238,7 +254,8 @@
                         const name = row.getAttribute('data-name');
                         const username = row.getAttribute('data-username');
                         const dept = row.getAttribute('data-dept');
-                        return name.includes(term) || username.includes(term) || dept.includes(term);
+                        return name.includes(term) || username.includes(term) || dept.includes(
+                        term);
                     });
                 }
 
