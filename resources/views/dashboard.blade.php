@@ -494,7 +494,7 @@
     <!-- ตารางรายการไฟล์แบบ Google Drive -->
     <div class="bg-white rounded-3xl shadow-xl shadow-gray-100 overflow-hidden border border-gray-100">
         <div class="px-8 py-6 border-b border-gray-50 flex justify-between items-center bg-white">
-            <h3 class="font-bold text-gray-800 text-lg">เอกสารและรายงานตรวจสุขภาพ</h3>
+            <h3 class="font-bold text-gray-800 text-lg">รายงานสรุปภาวะสุขภาพประจำปีรายหน่วยงาน</h3>
             <span class="text-xs bg-blue-50 text-blue-700 font-bold px-3 py-1.5 rounded-full">พบไฟล์ทั้งหมด
                 {{ $files->total() }} รายการ</span>
         </div>
@@ -502,7 +502,7 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left whitespace-nowrap">
                 <thead class="bg-gray-50 border-b border-gray-100">
-                    <tr>
+                    <tr class="text-center">
                         <th class="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">ชื่อเอกสาร</th>
                         <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">ปีการตรวจ</th>
                         <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">แผนก</th>
@@ -512,7 +512,12 @@
                         <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-center">สถานะ
                         </th>
                         <th class="px-8 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest text-right">
-                            การจัดการ</th>
+                            @if (Auth::user()->role === 'admin')
+                                <th class="... text-right">ตรวจสอบ ดาวน์โหลด และลบไฟล์</th>
+                            @else
+                                <th class="... text-right">ตรวจสอบและดาวน์โหลด</th>
+                        @endif
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
