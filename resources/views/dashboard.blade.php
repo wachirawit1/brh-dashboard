@@ -54,7 +54,7 @@
         <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">ศูนย์จัดเก็บข้อมูลสุขภาพพนักงาน</h2>
         <p class="text-gray-500 mt-1">ดาวน์โหลดและตรวจเช็คผลตรวจสุขภาพประจำปีแยกตามแผนกและปีงบประมาณ</p>
     </div>
-    
+
     @if(Auth::user()->role === 'admin')
         <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 w-full lg:w-auto">
             <form action="{{ route('admin.health-files.upload') }}" method="POST" enctype="multipart/form-data" class="flex flex-col sm:flex-row items-center gap-4">
@@ -213,7 +213,7 @@
                     <td class="px-6 py-5 text-sm text-gray-400">{{ number_format($file->file_size / 1024, 1) }} KB</td>
                     <td class="px-6 py-5 text-sm text-gray-400">{{ $file->created_at->format('d/m/Y H:i') }} น.</td>
                     <td class="px-6 py-5 text-sm text-gray-500">{{ $file->uploader->name ?? 'ไม่ระบุ' }}</td>
-                    
+
                     <td class="px-6 py-5 text-center">
                         @if(Auth::user()->role === 'admin')
                             <form action="{{ route('admin.health-files.publish', $file->id) }}" method="POST" class="inline-block">
@@ -285,7 +285,7 @@
 <!-- ============================================== -->
 <div id="preview-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-6xl h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in">
-        
+
         <!-- ส่วนหัว Modal (Header) -->
         <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
             <div>
@@ -356,11 +356,11 @@
             success: function(response) {
                 if (response.sheets && response.sheets.length > 0) {
                     currentSheets = response.sheets;
-                    
+
                     $('#preview-filename').text(response.filename);
                     $('#preview-department').text('แผนก: ' + response.department);
                     $('#preview-year').text('ประจำปี: พ.ศ. ' + response.year);
-                    
+
                     // สร้างปุ่มแท็บสำหรับแต่ละชีท
                     response.sheets.forEach((sheet, idx) => {
                         const activeClass = idx === 0 ? 'bg-blue-600 text-white font-bold' : 'bg-white text-gray-600 hover:bg-gray-100 font-semibold border border-gray-200';
@@ -448,3 +448,4 @@
     }
 </script>
 @endsection
+
