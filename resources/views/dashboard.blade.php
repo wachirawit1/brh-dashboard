@@ -588,8 +588,54 @@
         </div>
 
         @if ($files->hasPages())
-            <div class="px-8 py-4 bg-gray-50 border-t border-gray-100">
-                {{ $files->appends(request()->query())->links() }}
+            <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30" id="pagination-footer">
+                <div class="text-sm text-gray-500 font-medium" id="pagination-info">
+                    แสดง {{ $files->firstItem() }} - {{ $files->lastItem() }} จากทั้งหมด {{ $files->total() }} รายการ
+                </div>
+                <div class="flex items-center gap-1.5" id="pagination-buttons">
+                    <!-- Previous Page Button -->
+                    @if ($files->onFirstPage())
+                        <span class="p-2 rounded-xl border text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </span>
+                    @else
+                        <a href="{{ $files->appends(request()->query())->previousPageUrl() }}" class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </a>
+                    @endif
+
+                    <!-- Page Numbers -->
+                    @for ($i = 1; $i <= $files->lastPage(); $i++)
+                        @if ($i == $files->currentPage())
+                            <span class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100">
+                                {{ $i }}
+                            </span>
+                        @else
+                            <a href="{{ $files->appends(request()->query())->url($i) }}" class="w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                                {{ $i }}
+                            </a>
+                        @endif
+                    @endfor
+
+                    <!-- Next Page Button -->
+                    @if ($files->hasMorePages())
+                        <a href="{{ $files->appends(request()->query())->nextPageUrl() }}" class="p-2 rounded-xl border text-gray-600 border-gray-200 hover:bg-gray-50 transition duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    @else
+                        <span class="p-2 rounded-xl border text-gray-300 border-gray-100 cursor-not-allowed bg-gray-50/50">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </span>
+                    @endif
+                </div>
             </div>
         @endif
     </div>
