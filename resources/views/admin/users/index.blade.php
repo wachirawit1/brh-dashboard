@@ -36,7 +36,8 @@
             </div>
         </div>
 
-        <table class="w-full text-left" id="users-table">
+        <div class="overflow-x-auto main-table-container">
+            <table class="w-full text-left" id="users-table">
             <thead class="bg-gray-50 border-b border-gray-100">
                 <tr>
                     <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">ชื่อ-นามสกุล/แผนก
@@ -105,7 +106,8 @@
                         ไม่พบข้อมูลผู้ใช้งานที่ตรงตามคำค้นหา</td>
                 </tr>
             </tbody>
-        </table>
+            </table>
+        </div>
 
         <!-- แถบควบคุมการแบ่งหน้า (Pagination Footer) -->
         <div class="p-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50/30"

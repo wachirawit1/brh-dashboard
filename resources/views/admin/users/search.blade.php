@@ -32,7 +32,8 @@
         <div class="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
     </div>
 
-    <table class="w-full text-left">
+    <div class="overflow-x-auto main-table-container">
+        <table class="w-full text-left">
         <thead class="bg-gray-50 border-b border-gray-100">
             <tr>
                 <th class="px-8 py-5 text-sm font-semibold text-gray-600 uppercase tracking-wider">รหัสผู้ใช้</th>
@@ -45,7 +46,8 @@
         <tbody id="resultsBody" class="divide-y divide-gray-50">
             <!-- ข้อมูลจะถูกเติมโดย JavaScript -->
         </tbody>
-    </table>
+        </table>
+    </div>
 </div>
 
 <script>

@@ -90,23 +90,105 @@
             transition: width 0.3s ease;
         }
 
-        /* Custom scrollbar */
+        /* Custom scrollbar globally for standard elements (sidebar, dropdowns, etc.) */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #f8fafc;
         }
 
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 4px;
+            border-radius: 99px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
+        }
+
+        /* ปรับแต่งแถบสกรอลล์ (Scrollbar) สำหรับตารางหลักและตารางพรีวิว Excel ให้เด่นชัดและใช้งานง่าย */
+        .excel-preview-container,
+        .main-table-container {
+            scrollbar-width: auto; /* สำหรับ Firefox */
+            scrollbar-color: #94a3b8 #f1f5f9; /* สำหรับ Firefox (สีปุ่ม และ สีราง) */
+        }
+
+        /* สำหรับ Chrome, Safari, Edge */
+        .excel-preview-container::-webkit-scrollbar,
+        .main-table-container::-webkit-scrollbar {
+            width: 14px;  /* ความกว้างสำหรับแนวตั้ง */
+            height: 14px; /* ความสูงสำหรับแนวนอน */
+        }
+
+        .excel-preview-container::-webkit-scrollbar-track,
+        .main-table-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .excel-preview-container::-webkit-scrollbar-thumb,
+        .main-table-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+            border: 2px solid #f1f5f9;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .excel-preview-container::-webkit-scrollbar-thumb:hover,
+        .main-table-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .excel-preview-container::-webkit-scrollbar-thumb:active,
+        .main-table-container::-webkit-scrollbar-thumb:active {
+            background: #64748b;
+        }
+
+        /* เพิ่มปุ่มลูกศรควบคุมการเลื่อน (Scrollbar Buttons) เพื่อให้ผู้ใช้ทราบว่าเลื่อนได้ */
+        .excel-preview-container::-webkit-scrollbar-button,
+        .main-table-container::-webkit-scrollbar-button {
+            display: block;
+            background-color: #e2e8f0;
+            background-repeat: no-repeat;
+            background-size: 8px;
+            background-position: center;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .excel-preview-container::-webkit-scrollbar-button:hover,
+        .main-table-container::-webkit-scrollbar-button:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* ลูกศรเลื่อนขึ้น (Vertical Up) */
+        .excel-preview-container::-webkit-scrollbar-button:vertical:decrement,
+        .main-table-container::-webkit-scrollbar-button:vertical:decrement {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23475569'><polygon points='50,20 15,80 85,80'/></svg>");
+        }
+
+        /* ลูกศรเลื่อนลง (Vertical Down) */
+        .excel-preview-container::-webkit-scrollbar-button:vertical:increment,
+        .main-table-container::-webkit-scrollbar-button:vertical:increment {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23475569'><polygon points='15,20 85,20 50,80'/></svg>");
+        }
+
+        /* ลูกศรเลื่อนซ้าย (Horizontal Left) */
+        .excel-preview-container::-webkit-scrollbar-button:horizontal:decrement,
+        .main-table-container::-webkit-scrollbar-button:horizontal:decrement {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23475569'><polygon points='80,15 80,85 20,50'/></svg>");
+        }
+
+        /* ลูกศรเลื่อนขวา (Horizontal Right) */
+        .excel-preview-container::-webkit-scrollbar-button:horizontal:increment,
+        .main-table-container::-webkit-scrollbar-button:horizontal:increment {
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23475569'><polygon points='20,15 20,85 80,50'/></svg>");
         }
     </style>
 </head>
