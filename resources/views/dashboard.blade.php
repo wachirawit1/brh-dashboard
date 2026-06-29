@@ -22,7 +22,8 @@
             color: #374151;
         }
 
-        .excel-preview-container th {
+        .excel-preview-container th,
+        .excel-preview-container tr:first-child td {
             position: sticky;
             top: 0;
             background-color: #f8fafc !important;
