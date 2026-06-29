@@ -746,7 +746,7 @@
                     กำลังประมวลผลและแปลงไฟล์สเปรดชีตเป็น HTML...
                 </div>
                 <div id="preview-sheet-data"
-                    class="hidden w-full h-full overflow-auto excel-preview-container bg-white border border-gray-200 rounded-xl shadow-inner p-4">
+                    class="hidden w-full h-full overflow-auto excel-preview-container bg-white border border-gray-200 rounded-xl shadow-inner p-0">
                     <!-- แสดงข้อมูลชีทจริง -->
                 </div>
             </div>
